@@ -3,7 +3,8 @@ import registerRoute from "./auths/registerRoute"
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import loginRoute from "./auths/loginRoute"
+import loginRoute from "./auths/loginRoute";
+import userRoute from "./routes/userRoute";
 
 import auth, { AuthReq } from "./auths/auth";
 
@@ -21,13 +22,14 @@ mongoose.connect(process.env.MONGOOSE_URL || "")
 
 app.use(registerRoute);
 app.use(loginRoute);
+app.use(userRoute);
 
 app.get("/", (req, res) => {
     res.send("Hello from express from typescript");
 })
 
 app.get("/user", auth, async (req, res) => {
-    const user = await User.findById((req as AuthReq).user._id) 
+    const user = await User.findById((req as AuthReq).user._id);
     res.json(user)
 })
 
